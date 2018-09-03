@@ -1,0 +1,26 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "text": "Setup Server awdasd",
+      "isComplete": true,
+      "isEditable": false
+    },
+    {
+      "id": 2,
+      "text": "Start Server",
+      "isComplete": true
+    },
+    {
+      "id": 3,
+      "text": "Create tasks 3",
+      "isComplete": false,
+      "isEditable": false
+    },
+    {
+      "id": 4,
+      "text": "Setup fetch",
+      "isComplete": true
+    }
+  ]
+}

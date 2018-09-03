@@ -1,0 +1,22 @@
+.TodoApp {
+  text-align: center;
+  width: 60%;
+  border: 1px solid red;
+  margin: auto; }
+  .TodoApp * {
+    box-sizing: border-box; }
+  .TodoApp .main {
+    text-align: center;
+    border: 1px solid black; }
+    .TodoApp .main .errorMsg {
+      color: red; }
+    .TodoApp .main .main-input {
+      width: 600px;
+      font-size: 16px;
+      padding: 5px;
+      margin: 10px 50px; }
+    .TodoApp .main ul {
+      padding: 0; }
+      .TodoApp .main ul li {
+        list-style: none;
+        text-align: left; }

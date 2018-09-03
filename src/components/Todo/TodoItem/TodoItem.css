@@ -1,0 +1,8 @@
+.TodoItem .delete-icon {
+  visibility: hidden; }
+
+.TodoItem:hover .delete-icon {
+  visibility: visible; }
+
+.TodoItem span.strike {
+  text-decoration: line-through; }
