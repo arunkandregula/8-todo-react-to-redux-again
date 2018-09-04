@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import './TodoItem.css'
 const TodoItem = (props)=>{
-  debugger;
   let textClass = classNames({
     'strike': props.isComplete
   });

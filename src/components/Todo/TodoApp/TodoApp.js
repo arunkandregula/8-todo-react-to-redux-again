@@ -5,42 +5,32 @@ import Footer from '../Footer/Footer';
 import {loadTodos } from '../../../services/TodoService';
 import PropTypes from 'prop-types';
 import Constants from '../../../constants/Constants';
-import StoreFactory from '../../../store/StoreFactory';
+
 
 import './TodoApp.css';
 
 class TodoApp extends React.Component {
 
-  store = StoreFactory.getStore()
-
   static contextTypes = {
-    route: PropTypes.string,
-    handleLinkClick : PropTypes.func
-  }
-  state = {
-    todos: [],
-    currentTodo: '',
-    errorMessage: ''
+    store: PropTypes.object,
   }
 
   componentDidMount(){
     loadTodos().then((todoItems)=>{
       debugger;
-      this.store.dispatch({
+      this.context.store.dispatch({
         type: Constants.LOAD_TODOS,
         data: todoItems
       });
     });
 
-    this.store.subscribe(()=>{
-      
-      debugger;
+    this.context.store.subscribe(()=>{
       this.forceUpdate();
     });
   }
 
-  filter(todos){
-    switch(this.context.route){
+  filter(todos, filter){
+    switch(filter){
       case '/active': 
         return todos
           .filter((eachTodo)=>{
@@ -55,29 +45,29 @@ class TodoApp extends React.Component {
         break;
     }
             
-    return this.state.todos;
+    return todos;
   }
 
   handleInputSubmit = (event) => {
     event.preventDefault();
 
-    this.store.dispatch({
+    this.context.store.dispatch({
       type: Constants.ADD_TODO,
       data: {
-        text: this.store.getState().currentTodo
+        text: this.context.store.getState().currentTodo
       }
     });
   }
 
   handleInputChange = (event) => {
-    this.store.dispatch({
+    this.context.store.dispatch({
       type: Constants.CHANGE_CURRENT_TODO,
       data: event.target.value
     });
   }
 
   handleToggle = (id, event) => {
-    this.store.dispatch({
+    this.context.store.dispatch({
       type: Constants.TOGGLE_TODO,
       data: id
     });
@@ -85,22 +75,21 @@ class TodoApp extends React.Component {
 
   handleInvalidInputSubmit = (event) => {
     event.preventDefault();
-    this.store.dispatch({
+    this.context.store.dispatch({
       type: Constants.SHOW_ERROR_MSG,
       data: 'Todo Item cannot be empty'
     });
   }
 
   handleDelete = (id, event)=>{
-    this.store.dispatch({
+    this.context.store.dispatch({
       type: Constants.DELETE_TODO,
       data: id
     });
   }
 
   render(){
-    debugger;
-    const state = this.store.getState()
+    const state = this.context.store.getState()
     const submitHandler = !state.currentTodo || state.currentTodo.trim() === '' ? this.handleInvalidInputSubmit: this.handleInputSubmit
     return <div className="TodoApp">
       <header className="header">
@@ -112,7 +101,7 @@ class TodoApp extends React.Component {
           handleSubmit={submitHandler}
           /> <span className="'errorMsg'">{state.errorMessage}</span>
 
-        <TodoList todos={state.todos} handleToggle={this.handleToggle} handleDelete={this.handleDelete} />
+        <TodoList todos={this.filter(state.todos, state.filter)} handleToggle={this.handleToggle} handleDelete={this.handleDelete} />
       </section>
       <Footer />
     </div>;
