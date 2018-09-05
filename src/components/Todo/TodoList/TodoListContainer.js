@@ -1,6 +1,7 @@
 import TodoList from './TodoList';
 import ActionCreators from '../../../actions/ActionsCreator';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
 
 function getFilteredList(todos, filter){
   switch(filter){
@@ -21,7 +22,7 @@ function getFilteredList(todos, filter){
 }
 
 const mapStateToProps = (state, ownProps)=>({
-  todos: getFilteredList(state.todos, ownProps.filter)
+  todos: getFilteredList(state.todos, ownProps.params.filter || 'all')
 });
 
 const mapDispatchToProps = (dispatch, getState)=>({
@@ -34,7 +35,7 @@ const mapDispatchToProps = (dispatch, getState)=>({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TodoList));
 
 
 
