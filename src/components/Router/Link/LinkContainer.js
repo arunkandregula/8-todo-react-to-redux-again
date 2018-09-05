@@ -1,54 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import Link from './Link';
+import ActionCreators from '../../../actions/ActionsCreator';
+import {connect} from 'react-redux';
 
-class LinkContainer extends React.Component{
+const mapStateToProps = (state, ownProps)=>({
+  isActive: ownProps.to === state.filter
+})
 
-  static contextTypes = {
-    route: PropTypes.string,
-    handleLinkClick: PropTypes.func,
-    store: PropTypes.object
-  }
-
-  componentDidMount(){
-    this.unsubscribe = this.context.store.subscribe(()=>{
-      this.forceUpdate();
-    });
-  }
-
-  componentWillUnmount(){ 
-    this.unsubscribe();
-  }
-
-
-  handleClick = (event)=>{
+const mapDispatchToProps = (dispatch, ownProps)=>({
+  onClickDispatch(){
     //1. Avoid appending # on thwe browser bar - which is the default behavior
-    event.preventDefault();
+    
 
     //old: 2. We want the Link component to update the browser's address bar and history. But we dont want full page reload.
     //old: window.history.pushState(null, '', this.props.to);
     //window.history.pushState(null, '', this.props.to)
+    dispatch(ActionCreators.getSetVisibilityFilterAction(ownProps.to)) 
+  }
+});
 
+class LinkContainerWrapper extends React.Component {
+
+  static contextTypes = {
+    handleLinkClick: PropTypes.func
+  }
+
+  constructor(){
+    super();
+  }
+
+  handleLinkClick = (event) => {
+    event.preventDefault();
     //old: 3 Next option is to call the context and maintain the state of the route in it.
     this.context.handleLinkClick(this.props.to);
 
-    // saving the state of filter selected in the store ( and relying on this instead of on route. )
-    this.context.store.dispatch({
-      type: 'SET_VISIBILITY_FILTER',
-      data: this.props.to
-   });
-
-
+    // do the dispatch
+    this.props.onClickDispatch();
 
   }
   render(){
-    var className = classNames({
-      'Link': true,
-      'active': this.props.to === this.context.store.getState().filter
-    });
-    return <Link className={className} onClick={this.handleClick}>{this.props.children}</Link>; 
+    return <Link {...this.props} onClick={this.handleLinkClick} />;
   }
 }
 
-export default LinkContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(LinkContainerWrapper);

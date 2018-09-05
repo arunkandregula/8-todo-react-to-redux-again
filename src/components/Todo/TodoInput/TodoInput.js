@@ -1,23 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TodoInput = (props) => {
-  return  <form className="TodoInput" onSubmit={props.handleSubmit}>
-            <input 
-              type="text" 
-              value={props.value} 
-              placeholder="What needs to be done?" 
-              className="main-input" 
-              onChange={props.handleInputChange}
-            />
-          </form>;
+
+class TodoInput extends React.Component {
+
+  handleSubmit = (event)=>{
+    console.log(this.refs.inputNode.value );
+    event.preventDefault();
+    if( this.refs.inputNode.value === "" ){
+      this.props.handleInvalidInputSubmit();
+    } else {
+      debugger;
+      this.props.handleInputSubmit( this.refs.inputNode.value );
+    }
+  }
+
+  render(){
+    return  <form className="TodoInput" onSubmit={this.handleSubmit}>
+              <input 
+                type="text" 
+                value={this.props.value} 
+                placeholder="What needs to be done?" 
+                className="main-input" 
+                onChange={this.props.handleInputChange}
+                ref="inputNode" 
+              />
+              <span className="'errorMsg'">{this.props.errorMessage}</span>
+            </form>;
+  }
 }
-
-
-TodoInput.propTypes = {
-  value: PropTypes.string,
-  handleInputChange: PropTypes.func,
-  handleSubmit: PropTypes.func
-}
-
 export default TodoInput;
