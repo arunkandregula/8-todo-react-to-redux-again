@@ -17,9 +17,9 @@ const TodoApp = (props) => {
     </header>
     <section className="main">
       <TodoInputContainer />
-      <TodoListContainer />
+      <TodoListContainer filter={props.params.filter || 'all'}/>
     </section>
-    <Footer />
+    <Footer filter={props.params.filter || 'all'}/>
   </div>;
 }
 

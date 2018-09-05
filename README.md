@@ -98,3 +98,28 @@ Steps to follow to run the application:
 ## Problems with Step 3.
 
 1. We are using our own versions of Router and Link, which are very common in almost all applications. So lets replace them with versions provided by react-router.
+
+
+## Step4 - Branch.
+04-enter-react-router
+
+
+## Step4. Let React Router control the browser route state and lets rely on the route for filter logic.
+ 1. Earlier instead of relying on custom Router's context.route, we made changes so that we rely state.filter in redux state.
+    Now we change that logic and instead of saving the state of filter in store, we rely on browser route.
+    But this time the difference is we rely on react-router. Not our own custom router.
+
+ 2. Setting the default value of params.filter is a must or the default filter will be shown as undefined.
+  Example:
+  <TodoListContainer filter={props.params.filter || 'all'}/>
+
+ 3. Also <Link> tag has activeClass which makes life easy withotu using classNames etc.
+
+
+
+## Problems with Step 4.
+1. Currently Router params are available only to TodoApp. TodoApp doesnt directly use them, rahter pass them to its child components like :
+<TodoListContainer filter={props.params.filter || 'all'}/>
+Again boiler plate props. Lets see how we can directly inject these router params into connected components or container components.
+
+

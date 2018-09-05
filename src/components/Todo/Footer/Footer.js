@@ -1,12 +1,18 @@
 import React from 'react';
-import {LinkContainer} from '../../Router';
+import {Link} from 'react-router';
 import './Footer.css'
 
 const Footer = (props)=>{
+  let activeStyle = {
+    textDecoration: 'none',
+    color: 'black',
+    fontWeight: 'bold'
+  };
+
   return <div className="Footer">
-    <LinkContainer to="/">All</LinkContainer>
-    <LinkContainer to="/active">Active</LinkContainer>
-    <LinkContainer to="/completed">Completed</LinkContainer>
+    <Link to="/" activeStyle={activeStyle}>All</Link>
+    <Link to="/active" activeStyle={activeStyle}>Active</Link>
+    <Link to="/completed" activeStyle={activeStyle}>Completed</Link>
   </div>;
 }
 

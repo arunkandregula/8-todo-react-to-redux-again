@@ -4,12 +4,12 @@ import {connect} from 'react-redux';
 
 function getFilteredList(todos, filter){
   switch(filter){
-    case '/active': 
+    case 'active': 
       return todos
         .filter((eachTodo)=>{
           return !eachTodo.isComplete;
         })
-    case '/completed': 
+    case 'completed': 
       return todos
         .filter((eachTodo)=>{
           return eachTodo.isComplete;
@@ -20,8 +20,8 @@ function getFilteredList(todos, filter){
   return todos;
 }
 
-const mapStateToProps = (state)=>({
-  todos: getFilteredList(state.todos, state.filter)
+const mapStateToProps = (state, ownProps)=>({
+  todos: getFilteredList(state.todos, ownProps.filter)
 });
 
 const mapDispatchToProps = (dispatch, getState)=>({
