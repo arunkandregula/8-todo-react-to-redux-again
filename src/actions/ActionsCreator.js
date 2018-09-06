@@ -1,4 +1,5 @@
 import Constants from '../constants/Constants';
+import v4 from 'node-uuid';
 
 export default {
   getHandleInputChangeAction(value){
@@ -8,10 +9,10 @@ export default {
     };
   },
   getHandleInputSubmitAction(obj){
-    debugger;
     return {
       type: Constants.ADD_TODO,
       data: {
+        id: v4(),
         text: obj.data
       }
     };
@@ -25,19 +26,26 @@ export default {
   getHandleToggleAction(id){
     return {
       type: Constants.TOGGLE_TODO,
-      data: id
+      data: { id }
+
     }
   },
   getHandleDeleteAction(id){
     return {
       type: Constants.DELETE_TODO,
-      data: id
+      data: { id }
     }
   },
   getSetVisibilityFilterAction(value){
     return {
       type: Constants.SET_VISIBILITY_FILTER,
       data: value
+    };
+  },
+  getLoadTodosAction(jsonResp){
+    return {
+      type: Constants.LOAD_TODOS,
+      data: jsonResp
     };
   }
 

@@ -1,77 +1,41 @@
-import {createTodo, updateTodo, deleteTodo} from '../services/TodoService';
-import TodoHelpers from '../utils/todoHelpers';
-import Constants from '../constants/Constants';
+import byIdsReducer from './byIdsReducer';
+import allIdsReducer from './allIdsReducer';
 
-let defaultState = []
+let defaultState = {
+  byIds: {},
+  allIds: []
+}
 
 let todosReducer = (prevState = defaultState, action)=>{
-  debugger;
-  switch(action.type){
-    case 'LOAD_TODOS': 
-      return action.data;
-
-    case 'DELETE_TODO':
-      let todos = prevState.filter((eachTodo)=>{
-        if(eachTodo.id === action.data){
-          deleteTodo(eachTodo).then(()=>{
-            console.log(`${eachTodo.text} got deleted.` );
-          });
-        }
-        return eachTodo.id !== action.data
-      });
-      return todos;
-
-    case 'ADD_TODO':
-      let newTodo = {
-        id: TodoHelpers.generateId(),
-        text: action.data.text,
-        isComplete: false,
-      };
-      // STEP1: UPDATE THE SERVER
-      createTodo(newTodo).then(()=>{
-        console.log('A new todo was created.')
-      });
-
-      // STEP2. UPDATE THE STORE ( becuase we will return the value, we will keep it here)
-      return TodoHelpers.addTodo(prevState, newTodo);
-
-    case Constants.TOGGLE_TODO:
-      return prevState.map((eachTodo)=>{
-        if(eachTodo.id === action.data){
-          let toggledTodo = {...eachTodo, isComplete: !eachTodo.isComplete};
-
-          // save on the server
-          updateTodo(toggledTodo);
-
-          return toggledTodo;
-        } 
-        return eachTodo;
-      });
-
-    default:
-      break;  
-
-  }
-  return prevState;
+  return {
+    byIds: byIdsReducer(prevState.byIds, action),
+    allIds: allIdsReducer(prevState.allIds, action)
+  };
 }
 
 export default todosReducer;
 
+function getTodos(state){
+  return state.allIds.map((eachId) => state.byIds[eachId]);
+}
+
 // We usually call these selectors becuase they select something from the state
 export function getFilteredList(state, filter){
+  const todos = getTodos(state);
+
   switch(filter){
     case 'active': 
-      return state
+      return todos
         .filter((eachTodo)=>{
           return !eachTodo.isComplete;
         })
     case 'completed': 
-      return state
+      return todos
         .filter((eachTodo)=>{
           return eachTodo.isComplete;
         })
     default:
       break;
   }
-  return state;
+  return todos;
 }
