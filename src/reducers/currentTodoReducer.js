@@ -3,6 +3,9 @@ let defaultState = []
 
 let currentTodoReducer = (prevState = defaultState, action)=>{
   switch(action.type){
+    case 'ADD_TODO':
+      return '';
+
     case 'CHANGE_CURRENT_TODO':
       // STEP1: NO NEED TO UPDATE THE SERVER
       // createTodo(action.data);

@@ -56,3 +56,22 @@ let todosReducer = (prevState = defaultState, action)=>{
 }
 
 export default todosReducer;
+
+// We usually call these selectors becuase they select something from the state
+export function getFilteredList(state, filter){
+  switch(filter){
+    case 'active': 
+      return state
+        .filter((eachTodo)=>{
+          return !eachTodo.isComplete;
+        })
+    case 'completed': 
+      return state
+        .filter((eachTodo)=>{
+          return eachTodo.isComplete;
+        })
+    default:
+      break;
+  }
+  return state;
+}

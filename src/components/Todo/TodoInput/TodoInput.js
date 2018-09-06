@@ -10,7 +10,6 @@ class TodoInput extends React.Component {
     if( this.refs.inputNode.value === "" ){
       this.props.handleInvalidInputSubmit();
     } else {
-      debugger;
       this.props.handleInputSubmit( this.refs.inputNode.value );
     }
   }
