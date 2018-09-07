@@ -169,7 +169,7 @@ Again boiler plate props. Lets see how we can directly inject these router param
 ## Step8 - Branch.
 08-log-every-state-change
 
-## Step8.
+## Step8. Log every state change.
  1. We will see how to log every state change in the redux app. In Redux app, although we dont have central Dispatcher like in Flux, every state chnage is centralized thru store.dispatch() method.
 
  2. In this step, we will see how we can override store.dispatch method to log every state change.
@@ -182,4 +182,19 @@ Again boiler plate props. Lets see how we can directly inject these router param
 1. So far we have been doing eager loading, where it will retrive all the data in one request.
    Lets see how we can do lazy loading for performance reasons for huge data sets, where retriving everything in one request may take time.
 
+## Step9 - Branch.
+09-fetching-data-on-route-change
+
+## Step9. Fetching data on route change - as it is not a good idea to load all the data at once in large size production applications
+ 1. We have <TodoList />. We want to add props to it.
+    <TodoList filter="active" items={filtered items} />
+
+    Previous behaviour: All the data is loaded first time. Every time we chnage filter, items are filtered from the loaded list.
+    New/This Step behaviour: Every time we change filter, we fire an ajax request to get data specific to the filter.
+
+
+## Problems with Step 9
+1. Component will take the responsibility of calling the TodoService API and fetching the data and then passing the data to dispatch.
+   ActionCreator's method is alsmost dummy and have no use unless we have data.
+   We can have the action method do the heavy lifting than the component.
 

@@ -6,12 +6,17 @@ import {withRouter} from 'react-router';
 import {getFilteredList} from '../../../reducers/storeReducer';
 import {loadTodos} from '../../../services/TodoService';
 
-const mapStateToProps = (state, ownProps)=>({
-  todos: getFilteredList(state, ownProps.params.filter || 'all')
-});
+const mapStateToProps = (state, ownProps)=>{
+  const filter = ownProps.params.filter || 'all';
+  return {
+    todos: getFilteredList(state, filter),
+    filter
+  };
+};
 
 const mapDispatchToProps = (dispatch, getState)=>({
   loadData: (jsonResponse) => {
+
     dispatch(ActionCreators.getLoadTodosAction(jsonResponse));
   },
   handleToggle: (id, event) => {
@@ -25,7 +30,15 @@ const mapDispatchToProps = (dispatch, getState)=>({
 
 class TodoListWrapper extends React.Component{
   componentWillMount(){
-    loadTodos().then((jsonResponse)=>{
+    this.fetchData(this.props.filter);
+  }
+  componentWillReceiveProps(nextProps){
+    if(this.props.filter !== nextProps.filter){
+      this.fetchData(nextProps.filter);
+    }
+  }
+  fetchData(filter){
+    loadTodos(filter).then((jsonResponse)=>{
       this.props.loadData(jsonResponse);
     });
   }
