@@ -32,6 +32,15 @@ export default {
   },
   generateId(){
     return Math.random()*10000 << 0;
+  },
+  deleteTodoIndexAtIndex(ids, idToBeDeleted){
+    const index = ids.findIndex((eachId)=>{
+      return eachId === idToBeDeleted
+    });
+    return [
+      ...ids.slice(0, index),
+      ...ids.slice(index+1)
+    ];
   }
 
 }

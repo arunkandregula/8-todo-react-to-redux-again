@@ -15,9 +15,8 @@ const mapStateToProps = (state, ownProps)=>{
 };
 
 const mapDispatchToProps = (dispatch, getState)=>({
-  loadData: (jsonResponse) => {
-
-    dispatch(ActionCreators.getLoadTodosAction(jsonResponse));
+  loadData: (jsonResponse, filter) => {
+    dispatch(ActionCreators.getLoadTodosAction(jsonResponse, filter));
   },
   handleToggle: (id, event) => {
     dispatch(ActionCreators.getHandleToggleAction(id));
@@ -39,11 +38,13 @@ class TodoListWrapper extends React.Component{
   }
   fetchData(filter){
     loadTodos(filter).then((jsonResponse)=>{
-      this.props.loadData(jsonResponse);
+      this.props.loadData(jsonResponse, filter);
     });
   }
   render(){
-    return <TodoList {...this.props} />;
+    // only pass selected props (todos, handleToggle, handleDelete) to <TodoList>
+    const {loadData, filter, ...rest} = this.props;
+    return <TodoList {...rest} />;
   }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TodoListWrapper));

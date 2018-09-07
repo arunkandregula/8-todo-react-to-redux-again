@@ -42,10 +42,13 @@ export default {
       data: value
     };
   },
-  getLoadTodosAction(jsonResp){
+  getLoadTodosAction(jsonResp, filter){
     return {
       type: Constants.LOAD_TODOS,
-      data: jsonResp
+      data: {
+        todos: jsonResp,
+        filter
+      }
     };
   }
 

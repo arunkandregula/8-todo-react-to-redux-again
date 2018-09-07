@@ -17,10 +17,9 @@ const byIdsReducer = (prevState = {}, action)=>{
     
     case Constants.LOAD_TODOS:
       const map = {...prevState};
-      action.data.forEach((eachTodo)=> {
+      action.data.todos.forEach((eachTodo)=> {
         map[eachTodo.id] = eachTodo;
       });
-      debugger;
       return map;
     default:
       break;  

@@ -192,6 +192,9 @@ Again boiler plate props. Lets see how we can directly inject these router param
     Previous behaviour: All the data is loaded first time. Every time we chnage filter, items are filtered from the loaded list.
     New/This Step behaviour: Every time we change filter, we fire an ajax request to get data specific to the filter.
 
+ 2. We also change the structure of state todos.allIds to todos.idsByFilter (which is a map of all, active, completed reducers.)
+    Now that we load each filter separately, we store the ids separately to load from the database i.e. byIds faster.
+
 
 ## Problems with Step 9
 1. Component will take the responsibility of calling the TodoService API and fetching the data and then passing the data to dispatch.

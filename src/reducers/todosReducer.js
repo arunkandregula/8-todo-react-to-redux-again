@@ -1,5 +1,5 @@
 import byIdsReducer from './byIdsReducer';
-import allIdsReducer from './allIdsReducer';
+import idsByFilterReducer from './idsByFilterReducer';
 
 let defaultState = {
   byIds: {},
@@ -9,7 +9,7 @@ let defaultState = {
 let todosReducer = (prevState = defaultState, action)=>{
   return {
     byIds: byIdsReducer(prevState.byIds, action),
-    allIds: allIdsReducer(prevState.allIds, action)
+    idsByFilter: idsByFilterReducer(prevState.idsByFilter, action)
   };
 }
 
@@ -21,21 +21,6 @@ function getTodos(state){
 
 // We usually call these selectors becuase they select something from the state
 export function getFilteredList(state, filter){
-  const todos = getTodos(state);
-
-  switch(filter){
-    case 'active': 
-      return todos
-        .filter((eachTodo)=>{
-          return !eachTodo.isComplete;
-        })
-    case 'completed': 
-      return todos
-        .filter((eachTodo)=>{
-          return eachTodo.isComplete;
-        })
-    default:
-      break;
-  }
-  return todos;
+  const filterIds = state.idsByFilter[filter];
+  return filterIds.map(eachId => state.byIds[eachId]);
 }
