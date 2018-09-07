@@ -166,3 +166,20 @@ Again boiler plate props. Lets see how we can directly inject these router param
  2. Lets use v4() method of node-uuid npm package to generateId.
  3. We also added support for LOAD_TODOS event. We also took care of dispatching LOAD_TODOS event as part displaying the list. (which we missed in previous steps)
 
+## Step8 - Branch.
+08-log-every-state-change
+
+## Step8.
+ 1. We will see how to log every state change in the redux app. In Redux app, although we dont have central Dispatcher like in Flux, every state chnage is centralized thru store.dispatch() method.
+
+ 2. In this step, we will see how we can override store.dispatch method to log every state change.
+    We will also see how to use console.group API for grouping and coloring the logs.
+
+ 3. In one of the subsequent steps, we will see how to achieve the same using a npm package. (redux-logger)
+
+
+## Problems with Step 8 and its predecessors.
+1. So far we have been doing eager loading, where it will retrive all the data in one request.
+   Lets see how we can do lazy loading for performance reasons for huge data sets, where retriving everything in one request may take time.
+
+
