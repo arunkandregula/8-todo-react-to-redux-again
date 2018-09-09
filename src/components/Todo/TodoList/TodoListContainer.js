@@ -4,7 +4,6 @@ import ActionCreators from '../../../actions/ActionsCreator';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import {getFilteredList} from '../../../reducers/storeReducer';
-import {loadTodos} from '../../../services/TodoService';
 
 const mapStateToProps = (state, ownProps)=>{
   const filter = ownProps.params.filter || 'all';
@@ -14,9 +13,10 @@ const mapStateToProps = (state, ownProps)=>{
   };
 };
 
+
 const mapDispatchToProps = (dispatch, getState)=>({
-  loadData: (jsonResponse, filter) => {
-    dispatch(ActionCreators.getLoadTodosAction(jsonResponse, filter));
+  fetchAndloadData: (filter)=>{
+    dispatch(ActionCreators.getFetchAndLoadTodosPromiseAction(filter));
   },
   handleToggle: (id, event) => {
     dispatch(ActionCreators.getHandleToggleAction(id));
@@ -24,22 +24,27 @@ const mapDispatchToProps = (dispatch, getState)=>({
   handleDelete: (id, event) => {
     dispatch(ActionCreators.getHandleDeleteAction(id));
   }
-
 });
+
+
+/*
+const mapDispatchToProps = (dispatch, getState)=>({
+  //loadData: ActionCreators.getLoadTodosAction,
+  fetchAndloadData: ActionCreators.getFetchAndLoadTodosPromiseAction,
+  handleToggle: ActionCreators.getHandleToggleAction,
+  handleDelete: ActionCreators.getHandleDeleteAction
+});
+
+*/
 
 class TodoListWrapper extends React.Component{
   componentWillMount(){
-    this.fetchData(this.props.filter);
+    this.props.fetchAndloadData(this.props.filter);
   }
   componentWillReceiveProps(nextProps){
     if(this.props.filter !== nextProps.filter){
-      this.fetchData(nextProps.filter);
+      this.props.fetchAndloadData(nextProps.filter);
     }
-  }
-  fetchData(filter){
-    loadTodos(filter).then((jsonResponse)=>{
-      this.props.loadData(jsonResponse, filter);
-    });
   }
   render(){
     // only pass selected props (todos, handleToggle, handleDelete) to <TodoList>

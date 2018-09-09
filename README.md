@@ -35,8 +35,6 @@ Steps to follow to run the application:
    5. Forgot to remove state from TodoApp.js after moving the state to the store. We will remove that as part of Step2.
       Forgot to remove dependency on store in TodoApp.js
 
-
-
 ## Step2 - Branch.
 02-passing-down-store-from-Provider
 
@@ -201,3 +199,22 @@ Again boiler plate props. Lets see how we can directly inject these router param
    ActionCreator's method is alsmost dummy and have no use unless we have data.
    We can have the action method do the heavy lifting than the component.
 
+## Step10 - Branch.
+10-overriding-dispatch-to-support-promises
+
+## Step10. Overriding dispatch to support promises. Moving fetching data to action creator.
+ 1. We moved the api calling heavy work into action creator's getLoadTodosPromiseAction.
+    This returns a promise action object. And our dispatch should know how to handle this promise.
+    So just like earlier we have overriden store.dispatch to add logging support, this time we have overriden it so that it know know to handle special promise action objects.
+ 2. One thing to remember is, logging should happen after promise resolves so that we log useful action.data.
+    If we log before promise resolves, action.data will be printed as promise pending object which is not very useful.
+    For that, the store.dispatch that we make available to the application should first handle promise and then next store.dispatch must log the info and last store.dispatch should be the original dispatch.
+    For that ordering is important:
+
+    1. addLoggingSupport
+    2. addPromiseSupport.
+    and then give the latest dispatch to customer i.e. application.
+    So when application calls dispatch, it first calls 2. addPromiseSupport, once the promise is resolved, it then calls 1. addLoggingSupport .
+
+## Problems with Step 10
+1. If we want to enhance dispatch by wrapping it multiple times, the code pattern may look ugly. The order in which action propagates is reverse to the order in which we override dispatch method, which is not super readable or intuitive. For example, the order in which action propagates is getDispatchThatRecognizePromise and getDispatchThatLogsState. But the order in which we override dispatch is getDispatchThatLogsState, getDispatchThatRecognizePromise.

@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import storeReducer from '../reducers/storeReducer';
 
-function getEnhancedDispatchWithLogging(store){
+function getDispatchWithLogging(store){
   const rawDispatch = store.dispatch;
 
   return (action)=>{
@@ -20,12 +20,26 @@ function getEnhancedDispatchWithLogging(store){
 
 }
 
+const getDispatchWithPromiseSupport = (store)=>{
+  const rawDispatch = store.dispatch;
+
+  return (action)=>{
+    if(typeof action.then === 'function'){
+      return action.then(rawDispatch);
+    }
+    return rawDispatch(action);
+  }
+
+}
+
 function configureStore(){
   let store = createStore(storeReducer);  
 
   if(process.env.NODE_ENV !== 'production'){
-    store.dispatch = getEnhancedDispatchWithLogging(store);
+    store.dispatch = getDispatchWithLogging(store);
   }  
+
+  store.dispatch = getDispatchWithPromiseSupport(store);
 
   return store;
 }

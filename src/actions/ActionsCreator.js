@@ -1,7 +1,8 @@
 import Constants from '../constants/Constants';
 import v4 from 'node-uuid';
+import {loadTodos} from '../services/TodoService';
 
-export default {
+const ActionsCreator = {
   getHandleInputChangeAction(value){
     return {
       type: Constants.CHANGE_CURRENT_TODO,
@@ -50,6 +51,13 @@ export default {
         filter
       }
     };
+  },
+  getFetchAndLoadTodosPromiseAction(filter){
+    return loadTodos(filter).then((jsonResponse)=>{
+      return ActionsCreator.getLoadTodosAction(jsonResponse, filter);
+    });
   }
 
 }
+
+export default ActionsCreator;
