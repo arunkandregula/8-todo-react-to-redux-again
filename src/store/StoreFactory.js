@@ -1,37 +1,30 @@
 import {createStore} from 'redux';
 import storeReducer from '../reducers/storeReducer';
 
-function getDispatchWithLogging(store, nextDispatch){
-  return (action)=>{
-    if(!console.group){
-      return nextDispatch;
-    }
-
-    console.group(action.type);
-    console.log('%c prev state:', 'color: gray', store.getState());
-    console.log('%c action:', 'color: blue', action);
-    const returnValue = nextDispatch(action);
-    console.log('%c next state:','color: green', store.getState())
-    console.groupEnd(action.type);
-    return returnValue;
+const getDispatchWithLogging = (store) => (nextDispatch) => (action)=>{
+  if(!console.group){
+    return nextDispatch;
   }
 
+  console.group(action.type);
+  console.log('%c prev state:', 'color: gray', store.getState());
+  console.log('%c action:', 'color: blue', action);
+  const returnValue = nextDispatch(action);
+  console.log('%c next state:','color: green', store.getState())
+  console.groupEnd(action.type);
+  return returnValue;
 }
 
-const getDispatchWithPromiseSupport = (store, nextDispatch)=>{
-
-  return (action)=>{
-    if(typeof action.then === 'function'){
-      return action.then(nextDispatch);
-    }
-    return nextDispatch(action);
+const getDispatchWithPromiseSupport = (store) => (nextDispatch) => (action)=>{
+  if(typeof action.then === 'function'){
+    return action.then(nextDispatch);
   }
-
+  return nextDispatch(action);
 }
 
 function wrapDispatchWithMiddleware(store, middleware){
   middleware.slice().forEach((eachMiddleware)=>{
-    store.dispatch = eachMiddleware(store, store.dispatch);
+    store.dispatch = eachMiddleware(store)(store.dispatch);
   });
 }
 
