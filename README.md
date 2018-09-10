@@ -218,3 +218,20 @@ Again boiler plate props. Lets see how we can directly inject these router param
 
 ## Problems with Step 10
 1. If we want to enhance dispatch by wrapping it multiple times, the code pattern may look ugly. The order in which action propagates is reverse to the order in which we override dispatch method, which is not super readable or intuitive. For example, the order in which action propagates is getDispatchThatRecognizePromise and getDispatchThatLogsState. But the order in which we override dispatch is getDispatchThatLogsState, getDispatchThatRecognizePromise.
+
+## Step11 - Branch.
+11-introducing-middleware-chain
+
+## Step11. Introducing middleware chain in the order of action propogation.
+  1. We will see how we can have a more scalable and generalized way of enhancing dispatch functionality with the concept of middlewares.
+     Every middleware function/module wraps dispatch and enhances it.
+  2. We will also make it more readable and intuitive by declaring the middleware functions/modules in the same order in which the action propagates.
+  3. Instead of have every dispatch enhancer saving its own version of rawDispatch and reusing it, we pass rawDispatch as a 2nd param as another way to do it. Although this signature is also different from the redux middleware.
+  Note: If we declare the order as [promiseDispatch, loggingDispatch] as middlwares array, we DONT have to do middlewares.slice().reverse(). Not sure why I did middlewares.slice().reverse() in my previous attempt.
+
+## Problems with Step 11
+1. The signature of the middleware functions are different from the signature of middleware modules provided by redux i.e. 'redux-logger' and 'redux-promise'.
+
+
+
+
