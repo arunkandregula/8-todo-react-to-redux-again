@@ -30,8 +30,8 @@ const getDispatchWithPromiseSupport = (store, nextDispatch)=>{
 }
 
 function wrapDispatchWithMiddleware(store, middleware){
-  middleware.slice().forEach((eachMiddleware)=>{
-    store.dispatch = eachMiddleware(store, store.dispatch);
+  middleware.slice().reverse().forEach((eachMiddleware)=>{
+    store.dispatch = eachMiddleware(store)(store.dispatch);
   });
 }
 
