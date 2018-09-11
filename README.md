@@ -241,3 +241,21 @@ Again boiler plate props. Lets see how we can directly inject these router param
 
 ## Problems with Step 12
 1. The middlewares we wrote like getDispatchThatLogsState, getDispatchThatRecognizePromise and wrapDispatchWithMiddleware function are not reusable across applications.
+
+
+## Step13 - Branch.
+13-redux-applyMiddleware
+
+## Step13.
+1. We can reuse {applyMiddleware} from 'redux', {createLogger} from 'redux-logger', promise from 'redux-promise' instead of creating them by our own.
+
+
+## Problems with Step 13 and steps prior to that
+1. Any chnage we want to do like add todo, toggle todo, first do it on the server and use that as single source of truth.
+   We are not doing that. Rather we are first making chnages to the store and then doing it on the server as id it is a side action.
+   Lets address that.
+
+2. Reducers like TodoReducer is calling Server API. Reducers are supposed to be pure functions and should not have any side effects.
+   So we should not call server API in reducers. Lets see where we can call Server API.
+
+
