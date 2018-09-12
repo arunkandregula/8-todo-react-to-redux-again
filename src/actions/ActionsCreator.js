@@ -78,7 +78,13 @@ const ActionsCreator = {
     };
   },
   getLoadTodosThunkAction(filter){
-    return (dispatch)=>{
+    return (dispatch, getState)=>{
+
+      if(fromStoreReducer.getIsFetching(getState(), filter)){
+        // or just return if we dont intend to listen to the returning promise.
+        return Promise.resolve();
+      }
+
       // Step 1
       dispatch(ActionsCreator.getRequestTodosAction(filter));
 

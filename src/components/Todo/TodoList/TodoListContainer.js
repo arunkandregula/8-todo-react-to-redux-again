@@ -17,7 +17,7 @@ const mapStateToProps = (state, ownProps)=>{
 
 const mapDispatchToProps = (dispatch, getState)=>({
   fetchAndloadData: (filter)=>{
-    dispatch(ActionCreators.getLoadTodosThunkAction(filter));
+    return dispatch(ActionCreators.getLoadTodosThunkAction(filter));
   },
   handleToggle: (id, event) => {
     dispatch(ActionCreators.getToggleTodoThunkAction(id));
@@ -40,11 +40,15 @@ const mapDispatchToProps = (dispatch, getState)=>({
 
 class TodoListWrapper extends React.Component{
   componentWillMount(){
-    this.props.fetchAndloadData(this.props.filter);
+    this.props.fetchAndloadData(this.props.filter).then(()=>{
+        console.log(`Load data is done for ${this.props.filter} in componentWillMount`)
+      });
   }
   componentWillReceiveProps(nextProps){
     if(this.props.filter !== nextProps.filter){
-      this.props.fetchAndloadData(nextProps.filter);
+      this.props.fetchAndloadData(nextProps.filter).then(()=>{
+        console.log(`Load data is done for ${nextProps.filter} in componentWillReceiveProps`)
+      })
     }
   }
   render(){
