@@ -20,3 +20,7 @@ export default storeReducer;
 export function getFilteredList(state, filter){
   return fromTodosReducer.getFilteredList(state.todos, filter);
 }
+
+export function getIsFetching(state, filter){
+  return fromTodosReducer.getIsFetching(state.todos, filter);
+}

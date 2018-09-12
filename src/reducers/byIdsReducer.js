@@ -5,17 +5,18 @@ const byIdsReducer = (prevState = {}, action)=>{
   switch(action.type){
     //case 'LOAD_TODOS': 
     //  return action.data;
-    case Constants.ADD_TODO:
-    case Constants.TOGGLE_TODO:
-      prevState[action.data.id] = todoReducer(prevState[action.data.id], action)
-      break;
+    case Constants.ADD_TODO_SUCCESS:  
+    case Constants.TOGGLE_TODO_SUCCESS:  
+      return {
+        ...prevState,
+        [action.data.id]: todoReducer(prevState[action.data.id], action)
+      };
 
-    case Constants.DELETE_TODO:
-      todoReducer(prevState[action.data.id], action)
+    case Constants.DELETE_TODO_SUCCESS:
       delete prevState[action.data.id]
       break;
     
-    case Constants.LOAD_TODOS:
+    case Constants.RECEIVE_TODOS:
       const map = {...prevState};
       action.data.todos.forEach((eachTodo)=> {
         map[eachTodo.id] = eachTodo;

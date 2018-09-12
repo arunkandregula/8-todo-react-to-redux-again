@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch)=>({
   },
 
   handleInputSubmit: (value)=>{
-    dispatch(ActionCreators.getHandleInputSubmitAction({
+    dispatch(ActionCreators.getAddTodoThunkAction({
       data: value
     }));
   },

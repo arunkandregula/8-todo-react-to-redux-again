@@ -1,12 +1,12 @@
+import Constants from '../constants/Constants';
 
 let defaultState = []
 
 let currentTodoReducer = (prevState = defaultState, action)=>{
   switch(action.type){
-    case 'ADD_TODO':
+    case Constants.ADD_TODO_SUCCESS:
       return '';
-
-    case 'CHANGE_CURRENT_TODO':
+    case Constants.CHANGE_CURRENT_TODO:
       // STEP1: NO NEED TO UPDATE THE SERVER
       // createTodo(action.data);
 
@@ -14,7 +14,6 @@ let currentTodoReducer = (prevState = defaultState, action)=>{
       return action.data;
     default:
       break;  
-
   }
   return prevState;
 }

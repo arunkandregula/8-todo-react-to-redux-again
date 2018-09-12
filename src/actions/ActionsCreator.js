@@ -1,6 +1,6 @@
 import Constants from '../constants/Constants';
-import v4 from 'node-uuid';
-import {loadTodos} from '../services/TodoService';
+import TodoService from '../services/TodoService';
+import * as fromStoreReducer from '../reducers/storeReducer';
 
 const ActionsCreator = {
   getHandleInputChangeAction(value){
@@ -9,14 +9,17 @@ const ActionsCreator = {
       data: value
     };
   },
-  getHandleInputSubmitAction(obj){
-    return {
-      type: Constants.ADD_TODO,
-      data: {
-        id: v4(),
-        text: obj.data
-      }
-    };
+  getAddTodoThunkAction(obj){
+    return (dispatch)=>{
+      // Step1: Save it on the server
+      return TodoService.createTodo(obj.data).then((response)=>{
+        // Step2: Make state change on FE
+        dispatch({
+          type: Constants.ADD_TODO_SUCCESS,
+          data: response
+        });
+      });
+    }
   },
   getHandleInvalidInputSubmitAction(obj){
     return {
@@ -24,17 +27,31 @@ const ActionsCreator = {
       data: obj.data
     };
   },
-  getHandleToggleAction(id){
-    return {
-      type: Constants.TOGGLE_TODO,
-      data: { id }
-
+  getToggleTodoThunkAction(todo){
+    return (dispatch)=>{
+      // Step1: Save it on the server
+      return TodoService.toggleTodo(todo).then((response)=>{
+        // Step2: Make state change on FE
+        dispatch({
+          type: Constants.TOGGLE_TODO_SUCCESS,
+          data: response
+        });
+      });
     }
   },
-  getHandleDeleteAction(id){
-    return {
-      type: Constants.DELETE_TODO,
-      data: { id }
+  getDeleteTodoThunkAction(id){
+
+    return (dispatch)=>{
+      // Step1: Delete it on the server
+      return TodoService.deleteTodo(id).then((response)=>{
+        // Step2: Make state change on FE
+        dispatch({
+          type: Constants.DELETE_TODO_SUCCESS,
+          data: {
+            id: response
+          }
+        });
+      });
     }
   },
   getSetVisibilityFilterAction(value){
@@ -45,17 +62,32 @@ const ActionsCreator = {
   },
   getLoadTodosAction(jsonResp, filter){
     return {
-      type: Constants.LOAD_TODOS,
+      type: Constants.RECEIVE_TODOS,
       data: {
         todos: jsonResp,
         filter
       }
     };
   },
-  getFetchAndLoadTodosPromiseAction(filter){
-    return loadTodos(filter).then((jsonResponse)=>{
-      return ActionsCreator.getLoadTodosAction(jsonResponse, filter);
-    });
+  getRequestTodosAction(filter){
+    return {
+      type: Constants.REQUEST_TODOS,
+      data: {
+        filter
+      }
+    };
+  },
+  getLoadTodosThunkAction(filter){
+    return (dispatch)=>{
+      // Step 1
+      dispatch(ActionsCreator.getRequestTodosAction(filter));
+
+      // Step2
+      return TodoService.loadTodos(filter).then((jsonResponse)=>{
+        dispatch(ActionsCreator.getLoadTodosAction(jsonResponse, filter));
+      });
+
+    }
   }
 
 }

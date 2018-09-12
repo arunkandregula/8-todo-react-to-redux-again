@@ -9,7 +9,6 @@ let currentTodoReducer = (prevState = defaultState, action)=>{
     default:
       break;  
   }
-
   return prevState;
 }
 

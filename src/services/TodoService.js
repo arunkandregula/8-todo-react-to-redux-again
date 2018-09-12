@@ -1,9 +1,14 @@
+import v4 from 'node-uuid';
+
 const baseURL = 'http://localhost:8080/todos';
 const allTodosBaseURL = baseURL;
 const activeTodosBaseURL = `${baseURL}?isComplete=false`;
 const completedTodosBaseURL = `${baseURL}?isComplete=true`;
 
-export const loadTodos = (filter)=>{
+
+const delay = (delayInMillis)=> new Promise((resolve, reject)=>{setTimeout(resolve, delayInMillis)});
+
+const loadTodos = (filter)=>{
   let url = baseURL;
 
   switch(filter){
@@ -13,41 +18,59 @@ export const loadTodos = (filter)=>{
     default:
       break;
   }
-  return fetch(url).then(response => response.json());
+  return delay(5000)
+    .then(()=>fetch(url))
+    .then(response => response.json());
 }
 
-export const createTodo = (todo)=> {
+const createTodo = (text)=> {
+
+  const newTodo = {
+    id: v4(),
+    text,
+    isComplete: false
+  };
+
   return fetch(baseURL, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(todo)
+    body: JSON.stringify(newTodo)
   }).then(response => response.json())
 }
 
-export const updateTodo = (todo)=>{
+const toggleTodo = (todo)=>{
+
+  const toggledTodo = {...todo, isComplete : !todo.isComplete };
   return fetch(`${baseURL}/${todo.id}`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(todo)
+    body: JSON.stringify(toggledTodo)
   }).then((response)=>{
     return response.json();
   });
 }
 
-export const deleteTodo = (todo)=>{
-  return fetch(`${baseURL}/${todo.id}`, {
+const deleteTodo = (id)=>{
+  return fetch(`${baseURL}/${id}`, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   }).then((response)=>{
-    return response.json();
+    return id;
   });
+}
+
+export default {
+  loadTodos,
+  createTodo,
+  toggleTodo,
+  deleteTodo
 }

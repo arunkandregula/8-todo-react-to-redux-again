@@ -1,5 +1,6 @@
 import byIdsReducer from './byIdsReducer';
 import idsByFilterReducer from './idsByFilterReducer';
+import * as fromIdsByFilterReducer from './idsByFilterReducer';
 
 let defaultState = {
   byIds: {},
@@ -15,12 +16,12 @@ let todosReducer = (prevState = defaultState, action)=>{
 
 export default todosReducer;
 
-function getTodos(state){
-  return state.allIds.map((eachId) => state.byIds[eachId]);
-}
-
 // We usually call these selectors becuase they select something from the state
 export function getFilteredList(state, filter){
-  const filterIds = state.idsByFilter[filter];
-  return filterIds.map(eachId => state.byIds[eachId]);
+  const filterIdsObj = state.idsByFilter[filter];
+  return filterIdsObj.ids.map(eachId => state.byIds[eachId]);
+}
+
+export function getIsFetching(state, filter){
+  return fromIdsByFilterReducer.getIsFetching(state.idsByFilter, filter);
 }

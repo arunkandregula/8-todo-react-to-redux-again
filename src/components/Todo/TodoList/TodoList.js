@@ -2,7 +2,7 @@ import React from 'react';
 import TodoItem from '../TodoItem/TodoItem';
 function getTodoItems(todos, handleToggle, handleDelete){
   return todos.map((eachTodo)=>{
-    return <TodoItem key={eachTodo.id} {...eachTodo} handleToggle={handleToggle} handleDelete={handleDelete}/>;
+    return <TodoItem key={eachTodo.id} todo={eachTodo} handleToggle={handleToggle} handleDelete={handleDelete}/>;
   })
 }
 

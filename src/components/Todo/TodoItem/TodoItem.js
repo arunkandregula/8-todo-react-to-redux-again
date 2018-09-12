@@ -9,9 +9,9 @@ const TodoItem = (props)=>{
   });
 
   return <li className="TodoItem">
-      <a href="#" className="delete-icon" onClick={props.handleDelete.bind(null, props.id)}>X </a>
-      <input type="checkbox" defaultChecked={props.isComplete} onChange={props.handleToggle.bind(null, props.id)}/>
-      <span className={textClass} >{props.text}</span>
+      <a href="#" className="delete-icon" onClick={props.handleDelete.bind(null, props.todo.id)}>X </a>
+      <input type="checkbox" defaultChecked={props.todo.isComplete} onChange={props.handleToggle.bind(null, props.todo)}/>
+      <span className={textClass} >{props.todo.text}</span>
     </li>;
 }
 
