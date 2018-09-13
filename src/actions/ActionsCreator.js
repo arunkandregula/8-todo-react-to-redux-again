@@ -61,21 +61,10 @@ const ActionsCreator = {
     };
   },
   getLoadTodosAction(jsonResp, filter){
-    return {
-      type: Constants.RECEIVE_TODOS,
-      data: {
-        todos: jsonResp,
-        filter
-      }
-    };
+    return 
   },
   getRequestTodosAction(filter){
-    return {
-      type: Constants.REQUEST_TODOS,
-      data: {
-        filter
-      }
-    };
+    return 
   },
   getLoadTodosThunkAction(filter){
     return (dispatch, getState)=>{
@@ -86,16 +75,33 @@ const ActionsCreator = {
       }
 
       // Step 1
-      dispatch(ActionsCreator.getRequestTodosAction(filter));
+      dispatch({
+        type: Constants.FETCH_TODOS_REQUEST,
+        data: {
+          filter
+        }
+      });
 
       // Step2
       return TodoService.loadTodos(filter).then((jsonResponse)=>{
-        dispatch(ActionsCreator.getLoadTodosAction(jsonResponse, filter));
+        dispatch({
+          type: Constants.FETCH_TODOS_SUCCESS,
+          data: {
+            todos: jsonResponse,
+            filter
+          }
+        });
+      }, (error) => {
+        dispatch({
+          type: Constants.FETCH_TODOS_FAILURE,
+          data: {
+            filter,
+            message: error.message || 'Some error occurred'
+          }
+        });
       });
-
     }
   }
-
 }
 
 export default ActionsCreator;

@@ -1,11 +1,12 @@
 import Constants from '../constants/Constants';
 import TodoHelpers from '../utils/todoHelpers';
 import createIsFetchingReducer from './createIsFetchingReducer';
+import createErrorMessageReducer from './createErrorMessageReducer';
 import {combineReducers} from 'redux';
 
 const idsReducer = (prevState=[], action) => {
   switch(action.type){
-    case Constants.RECEIVE_TODOS:
+    case Constants.FETCH_TODOS_SUCCESS:
       if(action.data.filter !== 'active' && prevState.length === 0){
         return action.data.todos
           .filter(eachTodo => eachTodo.isComplete)
@@ -42,7 +43,8 @@ const idsReducer = (prevState=[], action) => {
 
 const completedReducer = combineReducers({
   ids: idsReducer,
-  isFetching: createIsFetchingReducer('completed')
+  isFetching: createIsFetchingReducer('completed'),
+  errorMessage: createErrorMessageReducer('completed')
 });
 
 export default completedReducer;

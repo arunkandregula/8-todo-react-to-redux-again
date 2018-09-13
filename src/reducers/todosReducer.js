@@ -25,3 +25,7 @@ export function getFilteredList(state, filter){
 export function getIsFetching(state, filter){
   return fromIdsByFilterReducer.getIsFetching(state.idsByFilter, filter);
 }
+
+export function getErrorMessageOnTab(state, filter){
+  return fromIdsByFilterReducer.getErrorMessageOnTab(state.idsByFilter, filter);
+}

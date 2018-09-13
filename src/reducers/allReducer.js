@@ -1,12 +1,13 @@
 import Constants from '../constants/Constants';
 import TodoHelpers from '../utils/todoHelpers';
 import createIsFetchingReducer from './createIsFetchingReducer';
+import createErrorMessageReducer from './createErrorMessageReducer';
 import {combineReducers} from 'redux';
 
 
 const idsReducer = (prevState=[], action) => {
   switch(action.type){
-    case Constants.RECEIVE_TODOS:
+    case Constants.FETCH_TODOS_SUCCESS:
       if(action.data.filter === 'all' && prevState.length === 0){
         return action.data.todos.map(eachTodo => eachTodo.id);
       }
@@ -30,6 +31,7 @@ const idsReducer = (prevState=[], action) => {
 
 const allReducer = combineReducers({
   ids: idsReducer,
-  isFetching: createIsFetchingReducer('all')
+  isFetching: createIsFetchingReducer('all'),
+  errorMessage: createErrorMessageReducer('all')
 });
 export default allReducer;

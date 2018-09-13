@@ -10,6 +10,13 @@ const delay = (delayInMillis)=> new Promise((resolve, reject)=>{setTimeout(resol
 
 const loadTodos = (filter)=>{
   let url = baseURL;
+  const randomFactor = Math.random();
+  console.log(randomFactor);
+  if( randomFactor > 0.5){
+    return delay(500).then(()=>{
+      throw new Error("Boom!")
+    });
+  }
 
   switch(filter){
     case 'active': url = activeTodosBaseURL; break;

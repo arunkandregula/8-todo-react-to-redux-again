@@ -309,3 +309,21 @@ Again boiler plate props. Lets see how we can directly inject these router param
    A thunk doesnt have to return anything.
    But if a thunk returns a promise its convinient for the calling code to know when the async action creator is done.
    eg. this.props.loadData(filter).then(() => console.log('loadData is done. Async'));
+
+## Problems with Step 15 and its predecessors.
+1. When API throws errors, we are not handling it graciously.
+
+## Step16 - Branch.
+16-handling-error-messages
+
+## Step16. Handling tab specific error messages.
+
+1. Lets see how to handle exceptions.
+2. Lets change {REQUEST_TODOS, RECEIVE_TODOS}  events to { FETCH_TODOS_REQUEST, FETCH_TODOS_SUCCESS, FETCH_TODOS_FAILURE }.
+3. Lets make sure we dont display loading indicator and leave it there in case of failure by updating isFetching flag ot false when we receive FETCH_TODOS_FAILURE.
+4. Lets throw errors randomly in the API to test FETCH_TODOS_FAILURE case.
+5. We already have common errorMessage at root level of state for entire app. In this step, we added error message handling per tab.
+
+
+
+

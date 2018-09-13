@@ -14,3 +14,7 @@ export default idsByFilterReducer;
 export function getIsFetching(state, filter){
   return state[filter].isFetching;
 }
+
+export function getErrorMessageOnTab(state, filter){
+  return state[filter].errorMessage;
+}

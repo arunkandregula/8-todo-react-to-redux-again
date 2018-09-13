@@ -16,7 +16,7 @@ const byIdsReducer = (prevState = {}, action)=>{
       delete prevState[action.data.id]
       break;
     
-    case Constants.RECEIVE_TODOS:
+    case Constants.FETCH_TODOS_SUCCESS:
       const map = {...prevState};
       action.data.todos.forEach((eachTodo)=> {
         map[eachTodo.id] = eachTodo;

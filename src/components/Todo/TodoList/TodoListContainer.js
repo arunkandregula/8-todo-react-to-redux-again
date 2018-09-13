@@ -10,7 +10,8 @@ const mapStateToProps = (state, ownProps)=>{
   return {
     todos: fromStoreReducer.getFilteredList(state, filter),
     filter,
-    isFetching: fromStoreReducer.getIsFetching(state, filter)
+    isFetching: fromStoreReducer.getIsFetching(state, filter),
+    errorMessageOnTab: fromStoreReducer.getErrorMessageOnTab(state, filter),
   };
 };
 
@@ -38,6 +39,13 @@ const mapDispatchToProps = (dispatch, getState)=>({
 
 */
 
+const ErrorMessageInTab = ({message, onRetry})=>{
+  return <div className="ErrorMessageInTab">
+    <p>{message}</p>
+    <button onClick={onRetry}>Retry</button>
+  </div>;
+}
+
 class TodoListWrapper extends React.Component{
   componentWillMount(){
     this.props.fetchAndloadData(this.props.filter).then(()=>{
@@ -53,9 +61,12 @@ class TodoListWrapper extends React.Component{
   }
   render(){
     // only pass selected props (todos, handleToggle, handleDelete) to <TodoList>
-    const {loadData, filter, isFetching, ...rest} = this.props;
+    const {loadData, filter, isFetching, errorMessageOnTab, ...rest} = this.props;
     if(isFetching && this.props.todos.length === 0){
       return <div>Loading...</div>;
+    }
+    if(errorMessageOnTab != null && this.props.todos.length === 0){
+      return <ErrorMessageInTab message={errorMessageOnTab} onRetry={this.props.fetchAndloadData.bind(null, filter)} />;
     }
     return <TodoList {...rest}/>;
   }
